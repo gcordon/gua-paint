@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Paint</title>
+    <style>
+        body { 
+            background-color: ivory; 
+        }
+        #id-main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            touch-action: none;
+            margin: 20px;
+        }
+        canvas {
+            border: black 1px solid;
+            box-shadow: 2px 2px 10px #ecebeb, -2px -2px 10px #ecebeb, -2px 2px 10px #ecebeb, 2px -2px 10px #ecebeb;
+        }
+    </style>
+</head>
+<body>
+    <div id="id-main">
+        <canvas id="id-canvas" width="600" height="400"></canvas>
+        <div id="id-position"></div>
+        <color-select></color-select>
+        <footer>@copy LinZR</footer>
+    </div>
+    <!-- 
+        1 有一个画板
+        2 画一个小点
+        3 鼠标 按下到抬起 的路线 画 小点
+     -->
+     <script src="utils.js"></script>
+     <script src="colorselect.js"></script>
+     <script src="guagame.js"></script>
+     <script src="gua-events.js"></script>
+     <script src="gua-base.js"></script>
+     <script src="gua-rect.js"></script>
+     <script src="gua-absorb.js"></script>
+     <script src="gua-pen.js"></script>
+     <script>
+        const strokeStyleElement = e('#id-stroke-style')
+        const fillStyleElement = e('#id-fill-style')
+
+        // 橡皮擦
+        class GuaClear extends GuaPen {
+            constructor() {
+                super()
+                this.type = 'clear'
+            }
+        }
+        
+        const enlabelDebugModel = (enlable) => {
+            if (!enlable) {
+                return
+            }
+            gua().drawBackground()
+            gua().drawRect()
+
+
+            // 双击清除
+            gua().addCanvasEvents('dblclick',(self, event)=>{
+                log(self, event)
+                self.clearCanvas()
+            })
+        }
+
+        const typeToggle = () => {
+            const guaevent = GuaEvents.new()
+            const rect = GuaRect.new()
+            const pen = GuaPen.new()
+            const clear = GuaClear.new()
+            const absorb = GuaAbsorb.new()
+
+            let selectType = pen
+
+            bindEvent(window, "keydown",(event)=>{
+                let k = event.key
+                log('按下', k)
+                if (k === 'q') {
+                    selectType = pen
+                } else if (k === 'w') {
+                    selectType = rect
+                } else if (k === 'e') {
+                    selectType = absorb
+                } else if (k === 'f') {
+                    selectType = clear
+                } else if (k === 't') {
+                    config.isFill = !config.isFill
+                } else if ('1234'.includes(k)) {
+                    config.lineWidth = Number(k) * 3
+                }
+                events(guaevent, selectType)
+            })
+            events(guaevent, selectType)
+        }
+        
+        const events = (guaevent, item) => {
+            guaevent.onMouseDown = (event) => {
+                item.onMouseDown(event)
+            }
+            guaevent.onMouseMove = (event) => {
+                item.onMouseMove(event)
+            }
+            guaevent.onMouseUp = (event) => {
+                item.onMouseUp(event)
+            }
+        }
+
+        const __main = () => {
+            enlabelDebugModel(true)
+            typeToggle()
+        }
+        __main()
+        
+     </script>
+</body>
+</html>
