@@ -5,13 +5,13 @@ class GuaPen {
     }
     constructor() {
         this.position = { x: 0, y: 0 }
-        this.g = gua()
+        this.game = gua()
         this.color = config.strokeStyle
         this.type = 'pen'
     }
 
     setDrawPosition(event) {
-        let p = this.g.getCoordinates(event)
+        let p = this.game.getCoordinates(event)
         this.position.x = p.x
         this.position.y = p.y
     }
@@ -26,7 +26,7 @@ class GuaPen {
             color = '#fff'
         }
 
-        let context = this.g.context
+        let context = this.game.context
         //开始绘制路径
         context.beginPath()
         //线宽

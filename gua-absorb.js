@@ -6,12 +6,12 @@ class GuaAbsorb extends GauBase {
     }
 
     setup() {
-        
+
     }
 
     // 吸取颜色
     colorExtraction(event)  {
-        let g = this.g
+        let g = this.game
         let p = g.getCoordinates(event)
         let x = p.x
         let y = p.y

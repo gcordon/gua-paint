@@ -4,7 +4,7 @@ class GuaEvents {
     }
     constructor() {
         this.mouseEnlabel = false
-        this.g = gua()
+        this.game = gua()
         this.events()
     }
 
@@ -13,7 +13,7 @@ class GuaEvents {
     }
     
     events() {
-        let canvas = this.g.canvas
+        let canvas = this.game.canvas
         canvas.addEventListener("mousedown",(event)=>{
             event.preventDefault()
             log('down', this)
@@ -23,8 +23,8 @@ class GuaEvents {
         canvas.addEventListener("mousemove",(event)=>{
             event.preventDefault()
 
-            let p = this.g.getCoordinates(event)
-            this.g.drawPositionText(p)
+            let p = this.game.getCoordinates(event)
+            this.game.drawPositionText(p)
             
             if (this.mouseEnlabel) {
                 log('move')

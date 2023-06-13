@@ -23,16 +23,18 @@ class GuaRect extends GauBase {
     }
 
     onMouseDown(event) {
-        this.positionStart.x = this.g.getCoordinates(event).x
-        this.positionStart.y = this.g.getCoordinates(event).y
+        let p = this.game.getCoordinates(event)
+        this.positionStart.x = p.x
+        this.positionStart.y = p.y
         super.getImageData()
     }
 
     onMouseMove(event) {
         super.putImageData()
 
-        this.positionEnd.x = this.g.getCoordinates(event).x
-        this.positionEnd.y = this.g.getCoordinates(event).y
+        let p = this.game.getCoordinates(event)
+        this.positionEnd.x = p.x
+        this.positionEnd.y = p.y
 
         log('this.positionEnd ', this.positionEnd)
         
@@ -42,7 +44,7 @@ class GuaRect extends GauBase {
         this.width = w
         this.height = h
 
-        let context = this.g.context
+        let context = this.game.context
         context.save()
         context.beginPath()
         context.lineWidth = config.lineWidth
