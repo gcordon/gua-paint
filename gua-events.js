@@ -16,7 +16,7 @@ class GuaEvents {
         let canvas = this.g.canvas
         canvas.addEventListener("mousedown",(event)=>{
             event.preventDefault()
-            log('down',)
+            log('down', this)
             this.mouseEnlabel = true
             this.onMouseDown(event)
         })

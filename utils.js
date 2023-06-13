@@ -31,5 +31,6 @@ const randomInt = (max) => {
 }
 
 const randomColor = () => {
+    // https://stackoverflow.com/questions/6735470/get-pixel-color-from-canvas-on-mousemove
     return `rgb(${randomInt(256)}, ${randomInt(256)}, ${randomInt(256)})`
 }

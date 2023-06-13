@@ -33,32 +33,21 @@
         3 鼠标 按下到抬起 的路线 画 小点
      -->
      <script src="utils.js"></script>
-     <script src="colorselect.js"></script>
      <script src="guagame.js"></script>
      <script src="gua-events.js"></script>
      <script src="gua-base.js"></script>
      <script src="gua-rect.js"></script>
      <script src="gua-absorb.js"></script>
      <script src="gua-pen.js"></script>
+     <script src="gua-clear.js"></script>
      <script>
-        const strokeStyleElement = e('#id-stroke-style')
-        const fillStyleElement = e('#id-fill-style')
-
-        // 橡皮擦
-        class GuaClear extends GuaPen {
-            constructor() {
-                super()
-                this.type = 'clear'
-            }
-        }
-        
         const enlabelDebugModel = (enlable) => {
             if (!enlable) {
                 return
             }
+
             gua().drawBackground()
             gua().drawRect()
-
 
             // 双击清除
             gua().addCanvasEvents('dblclick',(self, event)=>{
@@ -67,37 +56,72 @@
             })
         }
 
+        class Tool {
+
+            static rect = GuaRect.new()
+            static pen = GuaPen.new()
+            static clear = GuaClear.new()
+            static absorb = GuaAbsorb.new() 
+
+            static setConfig(key, value) {
+                config.key = value
+            }
+
+            static getConfig(key) {
+                return config.key
+            }
+
+            static setPaintType(type) {
+
+            }
+
+            static watchEvents(item){
+                let watch = GuaEvents.new()
+                log('paintEvents change', item.onMouseDown)
+                watch.onMouseDown = (event) => {
+                    item.onMouseDown(event)
+                }
+                watch.onMouseMove = (event) => {
+                    item.onMouseMove(event)
+                }
+                watch.onMouseUp = (event) => {
+                    item.onMouseUp(event)
+                }
+            }
+        }
+        const guaevent = GuaEvents.new()
+        const rect = GuaRect.new()
+        const pen = GuaPen.new()
+        const clear = GuaClear.new()
+        const absorb = GuaAbsorb.new()
+
         const typeToggle = () => {
-            const guaevent = GuaEvents.new()
-            const rect = GuaRect.new()
-            const pen = GuaPen.new()
-            const clear = GuaClear.new()
-            const absorb = GuaAbsorb.new()
-
-            let selectType = pen
-
             bindEvent(window, "keydown",(event)=>{
                 let k = event.key
-                log('按下', k)
+                log('按下 keydown', k)
+                if (k === 'c') {
+                    // 不知道为什么我的c键没事自动会触发，可能是因为用了什么傻逼软件了
+                    return
+                }
+
                 if (k === 'q') {
-                    selectType = pen
+                    paintEvents(pen)
                 } else if (k === 'w') {
-                    selectType = rect
+                    paintEvents(rect)
                 } else if (k === 'e') {
-                    selectType = absorb
+                    paintEvents(absorb)
                 } else if (k === 'f') {
-                    selectType = clear
+                    paintEvents(clear)
                 } else if (k === 't') {
                     config.isFill = !config.isFill
                 } else if ('1234'.includes(k)) {
                     config.lineWidth = Number(k) * 3
                 }
-                events(guaevent, selectType)
             })
-            events(guaevent, selectType)
         }
         
-        const events = (guaevent, item) => {
+        const paintEvents = (item) => {
+            log('paintEvents change', item)
             guaevent.onMouseDown = (event) => {
                 item.onMouseDown(event)
             }
@@ -111,10 +135,16 @@
 
         const __main = () => {
             enlabelDebugModel(true)
+                
+            paintEvents(pen)
+
+            // Tool.watchEvents(Tool.pen)
+
             typeToggle()
         }
         __main()
         
      </script>
+     <script src="colorselect.js"></script>
 </body>
 </html>

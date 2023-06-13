@@ -6,6 +6,7 @@ class GuaAbsorb extends GauBase {
     }
 
     setup() {
+        
     }
 
     // 吸取颜色
@@ -18,20 +19,19 @@ class GuaAbsorb extends GauBase {
         var hex = "#" + ("000000" + rgbToHex(c[0], c[1], c[2])).slice(-6)
 
         // hex 得到的如 # 开头的颜色
-        // new ColorSelect().setStorkeValue(hex)
-        config.strokeStyle = hex
         // log('吸取颜色 ', hex)
+        e('color-select').setAttribute('stroke-change-color', hex)
     }
 
     onMouseDown(event) {
         this.colorExtraction(event)
     }
 
-    onMouseMove() {
+    onMouseMove(event) {
         this.colorExtraction(event)
     }
 
-    onMouseUp() {
+    onMouseUp(event) {
         this.colorExtraction(event)
     }
 }
