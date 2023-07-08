@@ -1,15 +1,37 @@
 class GuaEvents {
-    static new(...args) {
-        return new this(...args)
-    }
     constructor() {
         this.mouseEnlabel = false
         this.game = gua()
+        this.scene = null
         this.events()
+    }
+
+    static new(...args) {
+        return new this(...args)
+    }
+    
+    runWithScene(scene) {
+        this.scene = scene
+    }
+
+    replaceScene(scene) {
+        this.scene = scene
     }
 
     setup() {
         this.events()
+    }
+
+    onMouseDown(event) {
+        this.scene.onMouseDown(event)
+    }
+
+    onMouseMove(event) {
+        this.scene.onMouseMove(event)
+    }
+
+    onMouseUp(event) {
+        this.scene.onMouseUp(event)
     }
     
     events() {

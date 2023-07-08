@@ -25,6 +25,9 @@
         <canvas id="id-canvas" width="600" height="400"></canvas>
         <div id="id-position"></div>
         <color-select></color-select>
+        <div style="color: darkred">
+            快捷键: q=笔 w=矩形 t=开启填充颜色 e=橡皮擦 数字1-5=笔宽度
+        </div>
         <footer>@copy LinZR</footer>
     </div>
     <!-- 
@@ -33,6 +36,7 @@
         3 鼠标 按下到抬起 的路线 画 小点
      -->
      <script src="utils.js"></script>
+     <script src="config_model.js"></script>
      <script src="guagame.js"></script>
      <script src="gua-events.js"></script>
      <script src="gua-base.js"></script>
@@ -62,7 +66,7 @@
         const __main = () => {
             enlabelDebugModel(true)
 
-            Tool.watchEvents(Tool.rect)
+            Tool.startInit(Tool.rect)
             Tool.watchKeydown()
         }
         __main()

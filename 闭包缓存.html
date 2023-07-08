@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    let log = console.log.bind(console)
+
+    let a = function(cacheName, arg1) {
+        let o = {
+            // key是参数一传进来的 
+            // 'lin': {
+            //     count: 10,
+            // }
+        }
+        let b = function(arg2) {
+            log('cacheName ', cacheName)
+            if (o[cacheName]) {
+                log('缓存中获取')
+                // 缓存中获取
+                return o[cacheName].count + arg2
+            } else {
+                log('创建新的')
+                // 创建新的
+                let n = arg1 + arg2
+                // log('arg1 arg2', arg1, arg2)
+                o[cacheName] = {
+                    count: n,
+                }
+                return o[cacheName].count
+            }
+        }
+
+        // 销毁闭包
+        let destroy = function() {
+            log('销毁闭包 ', cacheName)
+            delete o[cacheName]
+        }
+
+        return {
+            next: b, 
+            destroy: destroy,
+        }
+    }
+
+    let test1 = a('lin', 1)
+    log(test1.next(9))  // 创建一个新的   得到值 10    初始的1+9
+
+    log(test1.next(2))  // 拿到缓存   得到值 12        10+2
+    log(test1.next(3))  // 拿到缓存   得到值 13        10+3
+    log(test1.next(1))  // 拿到缓存   得到值 11        10+1
+    test1.destroy()     // 销毁闭包
+    log(test1.next(99))  // 创建一个新的   得到值 100  初始的1+99
+    log(test1.next(1))  // 拿到缓存       得到值 100   100+1
+
+    setTimeout(() => {
+        log('time')
+    }, 0);
+
+    new Promise((resolve, reject)=> {
+        log('p1 同步')
+        resolve()
+    }).then(()=>{
+        log('p1 异步')
+        new Promise((resolve, reject)=> {
+            log('p2 同步')
+            resolve()
+        }).then(()=>{
+            log('p2 异步')
+        }) 
+    }) 
+    
+
+</script>
+</html>

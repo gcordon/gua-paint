@@ -6,32 +6,12 @@ class Tool {
     static clear = GuaClear.new()
     static absorb = GuaAbsorb.new() 
 
-    //  config 相关的也应该抽成 类
-    static setConfig(key, value) {
-        config[key] = value
-    }
-
-    static getConfig(key) {
-        return config[key]
-    }
-
-    static setPaintType(type) {
-        this.current = type
-        this.watchEvents(this.current)
+    static startInit(item) {
+        this.watch.runWithScene(item)
     }
 
     static watchEvents(item){
-        let watch = this.watch
-        log('paintEvents change', item.onMouseDown)
-        watch.onMouseDown = (event) => {
-            item.onMouseDown(event)
-        }
-        watch.onMouseMove = (event) => {
-            item.onMouseMove(event)
-        }
-        watch.onMouseUp = (event) => {
-            item.onMouseUp(event)
-        }
+        this.watch.replaceScene(item)
     }
 
     static watchKeydown(){
@@ -52,11 +32,11 @@ class Tool {
             } else if (k === 'f') {
                 this.watchEvents(this.clear)
             } else if (k === 't') {
-                let f = !this.getConfig('isFill')
-                this.setConfig('isFill', f)
+                let f = !ConfigModel.getConfig('isFill')
+                ConfigModel.setConfig('isFill', f)
             } else if ('12345'.includes(k)) {
                 let f = Number(k) * 3
-                this.setConfig('lineWidth', f)
+                ConfigModel.setConfig('lineWidth', f)
             }
         })
     }

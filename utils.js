@@ -1,14 +1,3 @@
-window.config = {
-    // 边框宽度
-    lineWidth: 4,
-    // 边框颜色
-    strokeStyle: '#931515',
-    // 填充颜色
-    fillStyle: '#01f456',
-    // 是否填充颜色
-    isFill: false,
-}
-
 const log = console.log.bind(console)
 
 const e = sel => document.querySelector(sel)
